@@ -1,15 +1,16 @@
 {
-  "name": "AMA Lipa BagGuard",
+  "name": "AMA Lipa BagGuard System",
   "short_name": "BagGuard",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0b1120",
-  "theme_color": "#d97706",
+  "background_color": "#ffffff",
+  "theme_color": "#800000",
   "icons": [
     {
       "src": "/static/logo.jpg",
-      "sizes": "192x192",
-      "type": "image/jpeg"
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
     }
   ]
 }
