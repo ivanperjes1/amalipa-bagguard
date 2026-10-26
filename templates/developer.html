@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold text-white">System Administration Panel</h2>
+            <p class="text-muted small mb-0">Overview of all registered student bags stored in Supabase.</p>
+        </div>
+        <a href="{{ url_for('developer_logout') }}" class="btn btn-outline-danger btn-sm fw-bold">Lock / Logout</a>
+    </div>
+
+    <!-- Table of Stored Registrations -->
+    <div class="card shadow-lg p-3 bg-white">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Date</th>
+                        <th>Student Name</th>
+                        <th>USN</th>
+                        <th>Dept</th>
+                        <th>Bag Description</th>
+                        <th>Image</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if registrations %}
+                        {% for reg in registrations %}
+                        <tr>
+                            <td><small class="text-muted">{{ reg.created_at[:10] if reg.created_at else 'N/A' }}</small></td>
+                            <td class="fw-bold text-dark">{{ reg.student_name }}</td>
+                            <td><code>{{ reg.usn }}</code></td>
+                            <td><span class="badge bg-secondary">{{ reg.department }}</span></td>
+                            <td>{{ reg.bag_description }}</td>
+                            <td>
+                                {% if reg.image_filename %}
+                                    <a href="{{ url_for('static', filename='uploads/' + reg.image_filename) }}" target="_blank" class="btn btn-sm btn-outline-primary">View Photo</a>
+                                {% else %}
+                                    <span class="text-muted small">No photo</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center py-4 text-muted">No bag registrations found in Supabase database yet.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

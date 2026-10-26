@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+<meta name="theme-color" content="#d97706">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMA Lipa - BagGuard ID System</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #090d16 0%, #111827 50%, #1f2937 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: #f3f4f6 !important;
+            padding-top: 100px;
+        }
+        /* FORMAL NAVBAR */
+        .navbar {
+            background: #0b1120 !important;
+            border-bottom: 2px solid #d97706;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+        .navbar-brand img {
+            max-height: 40px;
+            width: auto;
+            object-fit: contain;
+            background: white;
+            padding: 2px 6px;
+            border-radius: 6px;
+        }
+        .navbar-toggler {
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            padding: 6px 10px;
+        }
+        .navbar-toggler:focus {
+            box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.25);
+        }
+        .nav-link {
+            color: #9ca3af !important;
+            font-weight: 500;
+            padding: 8px 14px !important;
+            border-radius: 6px;
+            transition: all 0.2s ease-in-out;
+        }
+        .nav-link:hover, .nav-link:focus {
+            color: #ffffff !important;
+            background-color: rgba(217, 119, 6, 0.15);
+            border-bottom: 2px solid #d97706;
+        }
+        /* POLISHED CARDS */
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            background: #ffffff !important;
+            color: #1f2937 !important;
+            padding: 15px;
+        }
+        h1, h2, h3, h4, h5, h6, .form-label, label {
+            color: #111827 !important;
+            font-weight: 700;
+        }
+        p, span, li, td, th {
+            color: #4b5563 !important;
+        }
+        .form-control {
+            background-color: #f9fafb !important;
+            border: 1px solid #d1d5db !important;
+            color: #111827 !important;
+            font-weight: 500;
+        }
+        .form-control:focus {
+            background-color: #ffffff !important;
+            color: #111827 !important;
+            border-color: #d97706;
+            box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.15);
+        }
+        /* FORMAL BUTTONS */
+        .btn-primary {
+            background: #1e3a8a !important;
+            border: none;
+            color: #ffffff !important;
+            font-weight: 600;
+        }
+        .btn-primary:hover {
+            background: #1e40af !important;
+        }
+        .btn-success {
+            background: #065f46 !important;
+            border: none;
+            color: #ffffff !important;
+            font-weight: 600;
+        }
+        .btn-success:hover {
+            background: #047857 !important;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- FORMAL NAVBAR WITH HAMBURGER TOGGLE -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top py-3">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url_for('index') }}">
+                <img src="{{ url_for('static', filename='logo.jpg') }}" alt="AMA Lipa Logo">
+                <span class="text-white fs-6 fw-semibold">BagGuard ID System</span>
+            </a>
+            
+            <!-- HAMBURGER TOGGLE BUTTON -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- COLLAPSIBLE NAVIGATION LINKS -->
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <div class="navbar-nav gap-2 align-items-lg-center pt-3 pt-lg-0">
+                    <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+                    <a class="nav-link" href="{{ url_for('register') }}">Student Dashboard</a>
+                    <a class="nav-link" href="{{ url_for('scan') }}">Guard Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container pb-5 mt-3">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }} alert-dismissible fade show shadow-sm auto-dismiss-alert" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- AUTO-DISMISS FLASH MESSAGES AFTER 5 SECONDS -->
+    <script>
+        setTimeout(function() {
+            let alerts = document.querySelectorAll('.auto-dismiss-alert');
+            alerts.forEach(function(alert) {
+                let bsAlert = new bootstrap.Alert(alert);
+                bsAlert.close();
+            });
+        }, 5000);
+    </script>
+</body>
+</html>

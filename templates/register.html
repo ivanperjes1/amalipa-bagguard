@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="card p-4 shadow-lg">
+            <h2 class="fw-bold mb-3 text-center">Student Bag Registration</h2>
+            <p class="text-center text-muted small mb-4">Register your personal assets and bag details for automated campus gate verification.</p>
+            
+            <!-- enctype="multipart/form-data" is required for file / image uploads -->
+            <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                
+                <div class="mb-3">
+                    <label for="student_name" class="form-label">Full Name</label>
+                    <input type="text" class="form-control" id="student_name" name="student_name" required placeholder="Enter your full name">
+                </div>
+
+                <div class="mb-3">
+                    <label for="usn" class="form-label">Student ID / USN</label>
+                    <input type="text" class="form-control" id="usn" name="usn" required placeholder="e.g., 21006050810">
+                </div>
+
+                <div class="mb-3">
+                    <label for="department" class="form-label">Department / Classification</label>
+                    <select class="form-control" id="department" name="department" required>
+                        <option value="" selected disabled>Select your classification</option>
+                        <option value="M1 - College">M1 - College</option>
+                        <option value="M2 - SHS-AMA">M2 - SHS-AMA</option>
+                        <option value="M3 - SHS-SASN">M3 - SHS-SASN</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="bag_description" class="form-label">Bag Description / Brand / Color</label>
+                    <textarea class="form-control" id="bag_description" name="bag_description" rows="2" required placeholder="e.g., Black backpack with laptop compartment"></textarea>
+                </div>
+
+                <!-- BAG PICTURE OR FILE UPLOAD -->
+                <div class="mb-4">
+                    <label for="bag_image" class="form-label">Upload Bag Picture / Supporting File</label>
+                    <input type="file" class="form-control" id="bag_image" name="bag_image" accept="image/*,.pdf" required>
+                    <div class="form-text">Upload a clear photo of your bag or official registration document (Images or PDFs).</div>
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary py-3 fw-bold">Submit Registration & Generate QR</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

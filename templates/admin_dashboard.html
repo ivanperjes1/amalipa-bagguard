@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-12">
+        
+        <!-- Header & Logout -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="text-dark fw-bold mb-0">Main Admin Control Panel</h2>
+                <p class="text-muted small mb-0">AMA Computer College - Lipa Bag Guard System</p>
+            </div>
+            <div>
+                <a href="{{ url_for('index') }}" class="btn btn-outline-secondary btn-sm me-2 shadow-sm">Home</a>
+                <a href="{{ url_for('admin_logout') }}" class="btn btn-danger btn-sm shadow-sm">Logout Admin</a>
+            </div>
+        </div>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show shadow-sm" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Pending Approval Requests Section -->
+        <div class="card p-4 shadow-sm mb-5 border-0 rounded-4 border-start border-warning border-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="text-warning fw-bold mb-0"><i class="bi bi-exclamation-triangle-fill"></i> Pending Student Registration Requests ({{ pending_bags|length }})</h4>
+                {% if pending_bags %}
+                <a href="{{ url_for('admin', action='approve_all') }}" class="btn btn-success btn-sm shadow-sm fw-semibold" onclick="return confirm('Are you sure you want to approve all pending student requests?');">
+                    <i class="bi bi-check-all"></i> Accept All Requests
+                </a>
+                {% endif %}
+            </div>
+            <p class="text-muted small mb-3">Approve student bag submissions individually or all at once before checkpoint guards can scan and verify them.</p>
+            
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Submitted At</th>
+                            <th>School ID</th>
+                            <th>Student Name</th>
+                            <th>Phone</th>
+                            <th>Bag Description</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for bag in pending_bags %}
+                        <tr>
+                            <td>{{ bag.registered_at.strftime('%Y-%m-%d %H:%M') if bag.registered_at else 'N/A' }}</td>
+                            <td><strong>{{ bag.school_id }}</strong></td>
+                            <td>{{ bag.full_name }}</td>
+                            <td>{{ bag.phone }}</td>
+                            <td>{{ bag.bag_description }}</td>
+                            <td class="text-center">
+                                <a href="{{ url_for('admin', action='approve', id=bag.id) }}" class="btn btn-success btn-sm shadow-sm me-1"><i class="bi bi-check-lg"></i> Approve</a>
+                                <a href="{{ url_for('admin', action='reject', id=bag.id) }}" class="btn btn-warning btn-sm shadow-sm me-1"><i class="bi bi-x-lg"></i> Reject</a>
+                                <a href="{{ url_for('admin', action='delete', id=bag.id) }}" class="btn btn-danger btn-sm shadow-sm" onclick="return confirm('Delete this record permanently?');"><i class="bi bi-trash"></i></a>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-4">No pending registration requests. All caught up!</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Approved Student Bags Section -->
+        <div class="card p-4 shadow-sm mb-5 border-0 rounded-4">
+            <h4 class="mb-3 text-success fw-bold"><i class="bi bi-check-circle-fill"></i> Approved Registered Bags ({{ approved_bags|length }})</h4>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Registration Date</th>
+                            <th>School ID</th>
+                            <th>Student Name</th>
+                            <th>Phone Number</th>
+                            <th>Bag Description</th>
+                            <th class="text-center">Manage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for bag in approved_bags %}
+                        <tr>
+                            <td>{{ bag.registered_at.strftime('%Y-%m-%d %H:%M') if bag.registered_at else 'N/A' }}</td>
+                            <td><strong>{{ bag.school_id }}</strong></td>
+                            <td>{{ bag.full_name }}</td>
+                            <td>{{ bag.phone }}</td>
+                            <td>{{ bag.bag_description }}</td>
+                            <td class="text-center">
+                                <a href="{{ url_for('admin', action='delete', id=bag.id) }}" class="btn btn-outline-danger btn-sm" onclick="return confirm('Revoke and delete this approved bag?');">Revoke</a>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-4">No approved bags found in database.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Scan & Release Audit Trail -->
+        <div class="card p-4 shadow-sm border-0 rounded-4">
+            <h4 class="mb-3 text-secondary fw-bold"><i class="bi bi-journal-text"></i> Checkpoint Scan Audit Logs</h4>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>School ID</th>
+                            <th>Owner Name</th>
+                            <th>Checkpoint Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for tx in pagination.items %}
+                        <tr>
+                            <td>{{ tx.scanned_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                            <td><strong>{{ tx.school_id }}</strong></td>
+                            <td>{{ tx.full_name }}</td>
+                            <td>
+                                {% if tx.status == 'CLAIMED_SUCCESS' %}
+                                    <span class="badge bg-success">CLAIMED & RELEASED</span>
+                                {% elif tx.status == 'PENDING_CLAIM' %}
+                                    <span class="badge bg-warning text-dark">PENDING VERIFICATION</span>
+                                {% else %}
+                                    <span class="badge bg-danger">UNAUTHORIZED / BLOCKED</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center text-muted py-4">No scan transactions logged yet.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <nav aria-label="Page navigation" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    {% if pagination.has_prev %}
+                        <li class="page-item"><a class="page-link" href="{{ url_for('admin', page=pagination.prev_num) }}">Previous</a></li>
+                    {% else %}
+                        <li class="page-item disabled"><span class="page-link">Previous</span></li>
+                    {% endif %}
+
+                    {% for page_num in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+                        {% if page_num %}
+                            {% if pagination.page == page_num %}
+                                <li class="page-item active"><span class="page-link">{{ page_num }}</span></li>
+                            {% else %}
+                                <li class="page-item"><a class="page-link" href="{{ url_for('admin', page=page_num) }}">{{ page_num }}</a></li>
+                            {% endif %}
+                        {% else %}
+                            <li class="page-item disabled"><span class="page-link">...</span></li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if pagination.has_next %}
+                        <li class="page-item"><a class="page-link" href="{{ url_for('admin', page=pagination.next_num) }}">Next</a></li>
+                    {% else %}
+                        <li class="page-item disabled"><span class="page-link">Next</span></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="card p-4 shadow-lg mb-4">
+            <h2 class="fw-bold mb-3 text-center">Guard Verification Scanner</h2>
+            <p class="text-center text-muted small mb-4">Use the camera scanner below for barcodes/QR codes or manually enter the USN.</p>
+            
+            <!-- LIVE CAMERA BARCODE & QR SCANNER CONTAINER -->
+            <div class="mb-4 text-center">
+                <div id="reader" style="width: 100%; max-width: 450px; margin: 0 auto;" class="rounded border shadow-sm p-2 bg-light"></div>
+            </div>
+
+            <hr class="my-3">
+
+            <!-- Manual Guard Scan / Input Form -->
+            <form method="POST" class="needs-validation" novalidate>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control form-control-lg" id="usn" name="usn" required placeholder="Enter or Scan USN (e.g., 21006050810)">
+                    <button class="btn btn-success px-4 fw-bold" type="submit">Verify Owner</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- ERROR ALERT (UNREGISTERED) -->
+        {% if error %}
+        <div class="alert alert-danger shadow-lg p-4 text-center border-0" role="alert">
+            <h3 class="fw-bold text-danger mb-1">ACCESS DENIED</h3>
+            <p class="mb-0 fs-6 text-dark">{{ error }}</p>
+        </div>
+        {% endif %}
+
+        <!-- SUCCESS VERIFICATION POP-UP CARD (OWNER MATCH) -->
+        {% if student %}
+        <div class="card shadow-lg border-success border-3 p-4 bg-white animate-fade-in">
+            <div class="d-flex align-items-center justify-content-between border-bottom pb-3 mb-3">
+                <div>
+                    <span class="badge bg-success fs-6 px-3 py-2">✓ VERIFIED OWNER</span>
+                    <h3 class="fw-bold text-success mt-2 mb-0">Bag Ownership Confirmed</h3>
+                </div>
+                <span class="badge bg-dark fs-5 px-3 py-2">{{ student.department }}</span>
+            </div>
+
+            <div class="row align-items-center">
+                <!-- Bag Image Preview -->
+                <div class="col-md-5 text-center mb-3 mb-md-0">
+                    {% if student.image_filename %}
+                        <img src="{{ url_for('static', filename='uploads/' + student.image_filename) }}" alt="Registered Bag" class="img-fluid rounded shadow-sm border" style="max-height: 200px; object-fit: cover;">
+                    {% else %}
+                        <div class="p-4 bg-light text-muted rounded">No image uploaded</div>
+                    {% endif %}
+                </div>
+
+                <!-- Student & Bag Details -->
+                <div class="col-md-7">
+                    <table class="table table-borderless mb-0">
+                        <tr>
+                            <td class="fw-bold text-muted ps-0">Student Name:</td>
+                            <td class="fw-bold text-dark fs-5">{{ student.student_name }}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold text-muted ps-0">Student ID / USN:</td>
+                            <td class="text-dark fw-semibold">{{ student.usn }}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold text-muted ps-0">Department:</td>
+                            <td><span class="badge bg-secondary">{{ student.department }}</span></td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold text-muted ps-0">Bag Description:</td>
+                            <td class="text-dark">{{ student.bag_description }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="mt-4 pt-3 border-top text-center">
+                <a href="{{ url_for('scan') }}" class="btn btn-primary px-5 fw-bold">Scan Next Student</a>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+
+<!-- INCLUDE HTML5 QRCODE & BARCODE SCANNER SCRIPT -->
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+<script>
+    function onScanSuccess(decodedText, decodedResult) {
+        // Automatically put the scanned barcode/QR value into the input and submit
+        document.getElementById('usn').value = decodedText;
+        
+        // Stop scanner to prevent multiple rapid scans
+        html5Scanner.clear().then(_ => {
+            document.querySelector('form').submit();
+        }).catch(error => {
+            console.error("Failed to clear scanner. Submitting anyway.", error);
+            document.querySelector('form').submit();
+        });
+    }
+
+    function onScanFailure(error) {
+        // Handle scan failure or frames where no code is found (keep quiet to avoid console spam)
+    }
+
+    // Initialize the scanner with support for standard 1D Barcodes and QR codes
+    let html5Scanner = new Html5QrcodeScanner(
+        "reader",
+        { 
+            fps: 15, 
+            qrbox: { width: 300, height: 150 }, // Wider box is ideal for rectangular barcodes
+            aspectRatio: 1.777778
+        },
+        /* verbose= */ false
+    );
+    
+    html5Scanner.render(onScanSuccess, onScanFailure);
+</script>
+{% endblock %}
