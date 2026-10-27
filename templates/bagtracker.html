@@ -3,46 +3,65 @@
 <div class="container py-4">
     <div class="row">
         <div class="col-12 text-center mb-4">
-            <h2 class="text-white font-weight-bold">BagTracker Interface</h2>
-            <p class="text-muted">Scan or search student IDs to monitor bag entry and exit records.</p>
+            <h2 class="text-white font-weight-bold">BagTracker Security Portal</h2>
+            <p class="text-muted">AMA Computer College - Lipa Campus Gate Pass Verification</p>
         </div>
     </div>
     
     <!-- Search Form -->
-    <div class="card bg-dark text-white p-4 shadow-lg border-secondary mb-4">
+    <div class="card bg-dark text-white p-4 shadow-sm border-secondary mb-4">
         <form method="POST">
             <div class="form-group mb-3">
-                <label for="bagSearchInput">Search Student ID / USN:</label>
-                <input type="text" id="bagSearchInput" name="usn" class="form-control bg-secondary text-white border-0" placeholder="Enter USN (e.g., 21006050810)..." required autofocus>
+                <label for="bagSearchInput" class="text-uppercase small font-weight-bold text-muted">Student Identification Number (USN):</label>
+                <input type="text" id="bagSearchInput" name="usn" class="form-control bg-secondary text-white border-0 py-2" placeholder="Enter USN (e.g., 21006050810)..." required autofocus>
             </div>
-            <button type="submit" class="btn btn-danger btn-block font-weight-bold">Process Entry / Exit</button>
+            <button type="submit" class="btn btn-primary btn-block font-weight-bold py-2">Verify Gate Pass</button>
         </form>
     </div>
 
     <!-- Error Message Display -->
     {% if error %}
-    <div class="alert alert-danger text-center font-weight-bold" role="alert">
-        {{ error }}
+    <div class="alert alert-danger text-center border-0 py-3 shadow-sm" role="alert">
+        <strong>ACCESS DENIED:</strong> {{ error }}
     </div>
     {% endif %}
 
     <!-- Student & Bag Details Result -->
     {% if student %}
-    <div class="card bg-dark text-white p-4 shadow-lg border-success">
-        <h4 class="text-success mb-3">✅ Verified Bag Registration</h4>
-        <div class="row">
+    <div class="card bg-dark text-white p-4 shadow-sm border-success">
+        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom border-secondary">
+            <h4 class="text-success m-0 font-weight-bold">Clearance Verified</h4>
+            <span class="badge badge-success px-3 py-2 text-uppercase">Status: Active</span>
+        </div>
+        <div class="row align-items-center">
             {% if student.image_filename %}
-            <div class="col-md-4 text-center mb-3">
-                <img src="{{ url_for('static', filename='uploads/' + student.image_filename) }}" class="img-fluid rounded border border-secondary" alt="Bag Image" style="max-height: 200px;">
+            <div class="col-md-4 text-center mb-3 mb-md-0">
+                <img src="{{ url_for('static', filename='uploads/' + student.image_filename) }}" class="img-fluid rounded border border-secondary shadow-sm" alt="Registered Bag Image" style="max-height: 220px; object-fit: cover;">
             </div>
             {% endif %}
             <div class="col-md-8">
-                <p><strong>Student Name:</strong> {{ student.student_name }}</p>
-                <p><strong>USN:</strong> {{ student.usn }}</p>
-                <p><strong>Department:</strong> {{ student.department }}</p>
-                <p><strong>Bag Description:</strong> {{ student.bag_description }}</p>
-                <div class="alert alert-success mt-3 py-2 text-center">
-                    Status: Allowed to Enter / Exit Campus
+                <table class="table table-dark table-borderless mb-0">
+                    <tbody>
+                        <tr>
+                            <td class="text-muted w-25">Student Name:</td>
+                            <td class="font-weight-bold">{{ student.student_name }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted">USN:</td>
+                            <td class="font-weight-bold">{{ student.usn }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted">Department:</td>
+                            <td><span class="badge badge-secondary">{{ student.department }}</span></td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted">Bag Description:</td>
+                            <td>{{ student.bag_description }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="alert alert-success mt-3 mb-0 py-2 text-center small text-uppercase font-weight-bold">
+                    Authorized for Campus Entry and Exit
                 </div>
             </div>
         </div>
