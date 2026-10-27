@@ -8,12 +8,45 @@
         </div>
     </div>
     
-    <div class="card bg-dark text-white p-4 shadow-lg border-secondary">
-        <div class="form-group mb-3">
-            <label for="bagSearchInput">Search Student ID / Barcode:</label>
-            <input type="text" id="bagSearchInput" class="form-control bg-secondary text-white border-0" placeholder="Scan barcode or enter ID number...">
-        </div>
-        <button class="btn btn-danger btn-block font-weight-bold">Process Entry / Exit</button>
+    <!-- Search Form -->
+    <div class="card bg-dark text-white p-4 shadow-lg border-secondary mb-4">
+        <form method="POST">
+            <div class="form-group mb-3">
+                <label for="bagSearchInput">Search Student ID / USN:</label>
+                <input type="text" id="bagSearchInput" name="usn" class="form-control bg-secondary text-white border-0" placeholder="Enter USN (e.g., 21006050810)..." required autofocus>
+            </div>
+            <button type="submit" class="btn btn-danger btn-block font-weight-bold">Process Entry / Exit</button>
+        </form>
     </div>
+
+    <!-- Error Message Display -->
+    {% if error %}
+    <div class="alert alert-danger text-center font-weight-bold" role="alert">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    <!-- Student & Bag Details Result -->
+    {% if student %}
+    <div class="card bg-dark text-white p-4 shadow-lg border-success">
+        <h4 class="text-success mb-3">✅ Verified Bag Registration</h4>
+        <div class="row">
+            {% if student.image_filename %}
+            <div class="col-md-4 text-center mb-3">
+                <img src="{{ url_for('static', filename='uploads/' + student.image_filename) }}" class="img-fluid rounded border border-secondary" alt="Bag Image" style="max-height: 200px;">
+            </div>
+            {% endif %}
+            <div class="col-md-8">
+                <p><strong>Student Name:</strong> {{ student.student_name }}</p>
+                <p><strong>USN:</strong> {{ student.usn }}</p>
+                <p><strong>Department:</strong> {{ student.department }}</p>
+                <p><strong>Bag Description:</strong> {{ student.bag_description }}</p>
+                <div class="alert alert-success mt-3 py-2 text-center">
+                    Status: Allowed to Enter / Exit Campus
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

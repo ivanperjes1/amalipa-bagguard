@@ -115,13 +115,25 @@ def developer_logout():
     flash('Logged out from admin session successfully.', 'info')
     return redirect(url_for('index'))
 
-@app.route('/bagtracker')
+@app.route('/bagtracker', methods=['GET', 'POST'])
 def bagtracker():
-    return render_template('bagtracker.html')
+    student = None
+    error = None
+    if request.method == 'POST':
+        usn = request.form.get('usn', '').strip()
+        try:
+            response = supabase.table('bag_registrations').select('*').eq('usn', usn).execute()
+            if response.data and len(response.data) > 0:
+                student = response.data[0]
+            else:
+                error = f"❌ UNREGISTERED: No bag registration found for USN: {usn}"
+        except Exception as e:
+            error = f"Database error: {str(e)}"
+            
+    return render_template('bagtracker.html', student=student, error=error)
 
 @app.route('/report')
 def report():
-    # Fetch real logs from Supabase for the reporting dashboard
     try:
         response = supabase.table('bag_registrations').select('*').execute()
         logs = response.data
