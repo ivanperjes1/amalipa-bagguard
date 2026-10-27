@@ -1,151 +1,64 @@
 {% extends "base.html" %}
 {% block content %}
-
-<!-- FULL-SCREEN INITIAL LOADING OVERLAY -->
-<div id="page-loader" class="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-dark" style="z-index: 9999; transition: opacity 0.5s ease;">
-    <div class="text-center">
-        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="loader mb-3">
-            <g class="dash">
-                <path style="--sped: 4s;" pathLength="360" d="M 31.9463 1 C 15.6331 1 2.2692 13.6936 1 29.8237 L 17.644 36.7682 C 19.0539 35.794 20.7587 35.2264 22.5909 35.2264 C 22.7563 35.2264 22.9194 35.231 23.0803 35.2399 L 30.4828 24.412 L 30.4828 24.2601 C 30.4828 17.7446 35.7359 12.4423 42.1933 12.4423 C 48.6507 12.4423 53.9038 17.7446 53.9038 24.2601 C 53.9038 30.7756 48.6507 36.08 42.1933 36.08 C 42.104 36.08 42.0168 36.0778 41.9275 36.0755 L 31.3699 43.6747 C 31.3766 43.8155 31.3811 43.9562 31.3811 44.0947 C 31.3811 48.9881 27.4374 52.9675 22.5909 52.9675 C 18.3367 52.9675 14.7773 49.902 13.9729 45.8443 L 2.068 40.8772 C 5.7548 54.0311 17.7312 63.6748 31.9463 63.6748 C 49.0976 63.6748 63 49.6428 63 32.3374 C 63 15.0297 49.0976 1 31.9463 1 Z" class="big"></path>
-                <path pathLength="360" d="M 20.4603 48.5493 L 16.6461 46.9584 C 17.3209 48.3794 18.4917 49.5682 20.0447 50.2206 C 23.4007 51.6328 27.2707 50.0262 28.6694 46.6367 C 29.3464 44.9966 29.3509 43.1867 28.6806 41.5422 C 28.0103 39.8977 26.7434 38.6151 25.119 37.9315 C 23.5035 37.2544 21.7741 37.279 20.2547 37.8576 L 24.1961 39.5022 C 26.6719 40.5434 27.8427 43.4124 26.8104 45.9105 C 25.7803 48.4085 22.936 49.5905 20.4603 48.5493 Z" class="aaa"></path>
-                <path pathLength="360" d="M 49.9968 24.2603 C 49.9968 19.9188 46.4954 16.384 42.1943 16.384 C 37.8908 16.384 34.3894 19.9188 34.3894 24.2603 C 34.3894 28.6017 37.8908 32.1343 42.1943 32.1343 C 46.4954 32.1343 49.9968 28.6017 49.9968 24.2603 Z"></path>
-                <path pathLength="360" d="M 36.3446 24.2469 C 36.3446 20.9802 38.97 18.3324 42.2054 18.3324 C 45.4431 18.3324 48.0685 20.9802 48.0685 24.2469 C 48.0685 27.5135 45.4431 30.1613 42.2054 30.1613 C 38.97 30.1613 36.3446 27.5135 36.3446 24.2469 Z"></path>
-            </g>
-            <path pathLength="360" d="M 31.9463 1 C 15.6331 1 2.2692 13.6936 1 29.8237 L 17.644 36.7682 C 19.0539 35.794 20.7587 35.2264 22.5909 35.2264 C 22.7563 35.2264 22.9194 35.231 23.0803 35.2399 L 30.4828 24.412 L 30.4828 24.2601 C 30.4828 17.7446 35.7359 12.4423 42.1933 12.4423 C 48.6507 12.4423 53.9038 17.7446 53.9038 24.2601 C 53.9038 30.7756 48.6507 36.08 42.1933 36.08 C 42.104 36.08 42.0168 36.0778 41.9275 36.0755 L 31.3699 43.6747 C 31.3766 43.8155 31.3811 43.9562 31.3811 44.0947 C 31.3811 48.9881 27.4374 52.9675 22.5909 52.9675 C 18.3367 52.9675 14.7773 49.902 13.9729 45.8443 L 2.068 40.8772 C 5.7548 54.0311 17.7312 63.6748 31.9463 63.6748 C 49.0976 63.6748 63 49.6428 63 32.3374 C 63 15.0297 49.0976 1 31.9463 1 Z" fill="#212121"></path>
-            <path class="fill" pathLength="360" d="M 31.9463 1 C 15.6331 1 2.2692 13.6936 1 29.8237 L 17.644 36.7682 C 19.0539 35.794 20.7587 35.2264 22.5909 35.2264 C 22.7563 35.2264 22.9194 35.231 23.0803 35.2399 L 30.4828 24.412 L 30.4828 24.2601 C 30.4828 17.7446 35.7359 12.4423 42.1933 12.4423 C 48.6507 12.4423 53.9038 17.7446 53.9038 24.2601 C 53.9038 30.7756 48.6507 36.08 42.1933 36.08 C 42.104 36.08 42.0168 36.0778 41.9275 36.0755 L 31.3699 43.6747 C 31.3766 43.8155 31.3811 43.9562 31.3811 44.0947 C 31.3811 48.9881 27.4374 52.9675 22.5909 52.9675 C 18.3367 52.9675 14.7773 49.902 13.9729 45.8443 L 2.068 40.8772 C 5.7548 54.0311 17.7312 63.6748 31.9463 63.6748 C 49.0976 63.6748 63 49.6428 63 32.3374 C 63 15.0297 49.0976 1 31.9463 1 Z"></path>
-        </svg>
-        <h4 class="text-white fw-bold">AMA LIPA BAGGUARD</h4>
-        <p class="text-white-50 small">Initializing Secure Dashboards...</p>
-    </div>
-</div>
-
-<!-- SPLIT-SCREEN PORTAL LAYOUT -->
-<div class="row align-items-center g-0" style="min-height: 80vh;">
-    
-    <!-- LEFT COLUMN: SECURITY BRANDING & FEATURES -->
-    <div class="col-lg-6 p-4 p-lg-5 text-white">
-        <h1 class="display-4 fw-bold mb-3" style="line-height: 1.1;">
-            <span class="white-text">Securing Every Campus Entry,</span> <span class="red-gold-gradient">Protecting Every Student Asset.</span>
-        </h1>
-        <div style="width: 60px; height: 4px; background: linear-gradient(90deg, #ffffff, #d97706); margin-bottom: 25px;"></div>
-        
-        <p class="text-white-50 mb-4 fs-6">
-            Welcome to the official BagGuard digital security and verification portal of <strong>AMA Education System Lipa Campus</strong>.
-        </p>
-
-        <div class="d-flex flex-column gap-3">
-            <div class="p-3 rounded-3" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);">
-                <h6 class="fw-bold mb-1 text-white">Encrypted Asset Registration</h6>
-                <p class="small text-white-50 mb-0">Secure database mapping for student USNs, bag inventories, and departmental routing.</p>
-            </div>
-            <div class="p-3 rounded-3" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);">
-                <h6 class="fw-bold mb-1 text-white">Real-Time Gate Verification</h6>
-                <p class="small text-white-50 mb-0">Instant campus security scanning and automated entry/exit validation for guards.</p>
-            </div>
+<div class="row justify-content-center py-4">
+    <div class="col-md-8">
+        <div class="text-center mb-4">
+            <h1 class="font-weight-bold text-dark">AMA Lipa BagGuard</h1>
+            <p class="text-muted">Campus Security & Bag Registration Portal</p>
         </div>
-    </div>
 
-    <!-- RIGHT COLUMN: DASHBOARD ACCESS CARD -->
-    <div class="col-lg-6 p-4 p-lg-5 d-flex justify-content-center">
-        <div class="card p-4 shadow-lg border-0 w-100" style="max-width: 450px; background: rgba(13, 27, 42, 0.85) !important; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1) !important;">
-            
-            <div class="text-center mb-4">
-                <h3 class="fw-bold text-white mb-1">Welcome back!</h3>
-                <p class="text-white-50 small">Select your operational dashboard to proceed.</p>
-            </div>
-
-            <div class="d-grid gap-3 mb-4">
-                <a href="{{ url_for('register') }}" class="btn btn-primary py-3 fw-bold shadow-sm">
-                    Open Student Dashboard
-                </a>
-                <a href="{{ url_for('scan') }}" class="btn btn-success py-3 fw-bold shadow-sm">
-                    Open Guard Dashboard
-                </a>
-            </div>
-
-            <!-- COLLAPSIBLE DEVELOPER PANEL BAR -->
-            <div class="border-top pt-3 border-secondary">
-                <button class="btn btn-sm btn-outline-light w-100 fw-semibold text-white-50" type="button" data-bs-toggle="collapse" data-bs-target="#developerBar" aria-expanded="false" aria-controls="developerBar">
-                    System Administration Panel ▾
-                </button>
-                <div class="collapse mt-2" id="developerBar">
-                    <div class="p-3 bg-dark rounded border border-secondary text-start d-flex justify-content-between align-items-center">
-                        <div>
-                            <strong class="text-white small d-block">Developer Access</strong>
-                            <span class="text-white-50" style="font-size: 0.75rem;">Authorized administrators only.</span>
-                        </div>
-                        <a href="/developer-secret-panel-xyz789" class="btn btn-warning btn-sm fw-bold px-3 text-dark">Access Portal</a>
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                </div>
-            </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
 
+        <!-- Registration Form Card -->
+        <div class="card bg-white text-dark shadow-sm border p-4">
+            <h3 class="mb-3 font-weight-bold text-primary">Student Bag Registration</h3>
+            <form action="{{ url_for('register') }}" method="POST" enctype="multipart/form-data">
+                <div class="form-group mb-3">
+                    <label for="student_name" class="font-weight-bold small text-secondary">Student Full Name:</label>
+                    <input type="text" class="form-control bg-light border" id="student_name" name="student_name" placeholder="Enter full name" required>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="usn" class="font-weight-bold small text-secondary">Student ID Number (USN):</label>
+                    <input type="text" class="form-control bg-light border" id="usn" name="usn" placeholder="e.g., 21006050810" required>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="department" class="font-weight-bold small text-secondary">Department / Program:</label>
+                    <select class="form-control bg-light border" id="department" name="department" required>
+                        <option value="" disabled selected>Select Department</option>
+                        <option value="BSCS">BS Computer Science (BSCS)</option>
+                        <option value="BSIT">BS Information Technology (BSIT)</option>
+                        <option value="BSCPE">BS Computer Engineering (BSCPE)</option>
+                        <option value="BSBA">BS Business Administration (BSBA)</option>
+                    </select>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="bag_description" class="font-weight-bold small text-secondary">Bag Description (Brand, Color, Type):</label>
+                    <textarea class="form-control bg-light border" id="bag_description" name="bag_description" rows="3" placeholder="e.g., Black North Face backpack with laptop compartment" required></textarea>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="bag_image" class="font-weight-bold small text-secondary">Upload Bag Photo / Proof:</label>
+                    <input type="file" class="form-control-file border p-2 rounded bg-light" id="bag_image" name="bag_image" accept="image/*">
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block font-weight-bold py-2">Submit Registration</button>
+            </form>
         </div>
     </div>
-
 </div>
-
-<style>
-.white-text {
-    color: #ffffff;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.red-gold-gradient {
-    color: #f59e0b;
-    background: linear-gradient(90deg, #ef4444 0%, #f59e0b 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.loader {
-  display: block;
-  width: 12em;
-  height: 12em;
-  overflow: visible;
-  margin: 0 auto;
-}
-.loader path.fill {
-  fill: #78000022;
-  animation: fill 4s ease-in-out infinite;
-}
-.loader .dash path {
-  stroke: #ffb703;
-  stroke-width: 2px;
-  stroke-linecap: round;
-  animation: dashArray var(--sped, 2s) ease-in-out infinite,
-    dashOffset var(--sped, 2s) linear infinite;
-}
-.loader .dash path.big {
-  stroke-width: 2.5px;
-  filter: drop-shadow(0 0 3px #ffb703);
-}
-@keyframes dashArray {
-  0% { stroke-dasharray: 0 1 359 0; }
-  50% { stroke-dasharray: 0 359 1 0; }
-  100% { stroke-dasharray: 359 1 0 0; }
-}
-@keyframes dashOffset {
-  0% { stroke-dashoffset: -5; }
-  100% { stroke-dashoffset: -365; }
-}
-@keyframes fill {
-  30%, 55% { fill: #78000000; }
-}
-</style>
-
-<script>
-function hideLoader() {
-    const loader = document.getElementById('page-loader');
-    if (loader) {
-        loader.style.opacity = '0';
-        loader.style.pointerEvents = 'none';
-        setTimeout(() => {
-            loader.style.display = 'none';
-        }, 500);
-    }
-}
-window.addEventListener('load', hideLoader);
-setTimeout(hideLoader, 1500);
-</script>
 {% endblock %}
