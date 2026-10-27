@@ -3,22 +3,20 @@
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h2 class="fw-bold text-white">System Administration Panel</h2>
-            <p class="text-muted small mb-0">Overview of all registered student bags stored in Supabase.</p>
+            <h2 class="text-dark font-weight-bold">System Administration Panel</h2>
+            <p class="text-muted">Master Registry of All Registered Student Bags</p>
         </div>
-        <a href="{{ url_for('developer_logout') }}" class="btn btn-outline-danger btn-sm fw-bold">Lock / Logout</a>
+        <a href="{{ url_for('developer_logout') }}" class="btn btn-outline-danger btn-sm font-weight-bold">Logout</a>
     </div>
 
-    <!-- Table of Stored Registrations -->
-    <div class="card shadow-lg p-3 bg-white">
+    <div class="card bg-white text-dark shadow-sm border p-3">
         <div class="table-responsive">
-            <table class="table table-hover align-middle">
-                <thead class="table-dark">
+            <table class="table table-hover mb-0">
+                <thead class="thead-light">
                     <tr>
-                        <th>Date</th>
                         <th>Student Name</th>
                         <th>USN</th>
-                        <th>Dept</th>
+                        <th>Department</th>
                         <th>Bag Description</th>
                         <th>Image</th>
                     </tr>
@@ -27,23 +25,22 @@
                     {% if registrations %}
                         {% for reg in registrations %}
                         <tr>
-                            <td><small class="text-muted">{{ reg.created_at[:10] if reg.created_at else 'N/A' }}</small></td>
-                            <td class="fw-bold text-dark">{{ reg.student_name }}</td>
-                            <td><code>{{ reg.usn }}</code></td>
-                            <td><span class="badge bg-secondary">{{ reg.department }}</span></td>
+                            <td class="font-weight-bold">{{ reg.student_name }}</td>
+                            <td>{{ reg.usn }}</td>
+                            <td><span class="badge badge-secondary">{{ reg.department }}</span></td>
                             <td>{{ reg.bag_description }}</td>
                             <td>
                                 {% if reg.image_filename %}
-                                    <a href="{{ url_for('static', filename='uploads/' + reg.image_filename) }}" target="_blank" class="btn btn-sm btn-outline-primary">View Photo</a>
+                                <a href="{{ url_for('static', filename='uploads/' + reg.image_filename) }}" target="_blank" class="text-primary font-weight-bold small">View Image</a>
                                 {% else %}
-                                    <span class="text-muted small">No photo</span>
+                                <span class="text-muted small">No Image</span>
                                 {% endif %}
                             </td>
                         </tr>
                         {% endfor %}
                     {% else %}
                         <tr>
-                            <td colspan="6" class="text-center py-4 text-muted">No bag registrations found in Supabase database yet.</td>
+                            <td colspan="5" class="text-center text-muted py-4">No registrations found in database.</td>
                         </tr>
                     {% endif %}
                 </tbody>

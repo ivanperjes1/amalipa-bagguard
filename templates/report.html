@@ -3,15 +3,15 @@
 <div class="container py-4">
     <div class="row mb-4">
         <div class="col-12">
-            <h2 class="text-white font-weight-bold">System Reports & Logs</h2>
+            <h2 class="text-dark font-weight-bold">System Reports & Logs</h2>
             <p class="text-muted">Overview of campus gate pass entries and bag monitoring logs.</p>
         </div>
     </div>
 
-    <div class="card bg-dark text-white shadow-lg border-secondary p-3">
+    <div class="card bg-white text-dark shadow-sm border p-3">
         <div class="table-responsive">
-            <table class="table table-dark table-hover mb-0">
-                <thead>
+            <table class="table table-hover mb-0">
+                <thead class="thead-light">
                     <tr>
                         <th>Student Name</th>
                         <th>USN</th>
@@ -23,15 +23,15 @@
                     {% if logs %}
                         {% for log in logs %}
                         <tr>
-                            <td>{{ log.student_name }}</td>
+                            <td class="font-weight-bold">{{ log.student_name }}</td>
                             <td>{{ log.usn }}</td>
-                            <td>{{ log.department }}</td>
+                            <td><span class="badge badge-secondary">{{ log.department }}</span></td>
                             <td>{{ log.bag_description }}</td>
                         </tr>
                         {% endfor %}
                     {% else %}
                         <tr>
-                            <td colspan="4" class="text-center text-muted">No records found.</td>
+                            <td colspan="4" class="text-center text-muted py-4">No records found.</td>
                         </tr>
                     {% endif %}
                 </tbody>
