@@ -97,12 +97,10 @@ def developer_login():
 
 @app.route('/developer-secret-panel-xyz789')
 def developer_panel():
-    # Check if admin is logged in via session
     if not session.get('admin_logged_in'):
         flash('Please enter the administrative password first.', 'warning')
         return redirect(url_for('developer_login'))
         
-    # Fetch all registered bags from Supabase to display in the admin panel table
     try:
         response = supabase.table('bag_registrations').select('*').execute()
         registrations = response.data
@@ -116,6 +114,20 @@ def developer_logout():
     session.pop('admin_logged_in', None)
     flash('Logged out from admin session successfully.', 'info')
     return redirect(url_for('index'))
+
+@app.route('/bagtracker')
+def bagtracker():
+    return render_template('bagtracker.html')
+
+@app.route('/report')
+def report():
+    # Fetch real logs from Supabase for the reporting dashboard
+    try:
+        response = supabase.table('bag_registrations').select('*').execute()
+        logs = response.data
+    except Exception as e:
+        logs = []
+    return render_template('report.html', logs=logs)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
