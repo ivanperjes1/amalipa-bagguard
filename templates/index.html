@@ -1,21 +1,23 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="row justify-content-center py-4">
-    <div class="col-md-8">
-        <div class="text-center mb-4">
-            <h1 class="font-weight-bold text-dark">AMA Lipa BagGuard</h1>
-            <!-- Added Official Tagline -->
-            <p class="text-uppercase font-weight-bold text-primary small tracking-wide mt-1">
+<div class="row justify-content-center py-5">
+    <div class="col-md-10 text-center">
+        <!-- Main Institutional Banner -->
+        <div class="mb-5">
+            <h1 class="font-weight-bold text-dark display-4 mb-2">AMA Lipa BagGuard</h1>
+            <p class="text-uppercase font-weight-bold text-primary small tracking-wide mb-3">
                 Securing every campus entry, protecting every student asset.
             </p>
-            <p class="text-muted">Campus Security & Bag Registration Portal</p>
+            <p class="text-muted lead mx-auto" style="max-width: 600px;">
+                Official student bag registry, gate pass verification, and campus security management system for AMA Computer College – Lipa Campus.
+            </p>
         </div>
 
         <!-- Flash Messages -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
-                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    <div class="alert alert-{{ category }} alert-dismissible fade show text-left" role="alert">
                         {{ message }}
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -25,43 +27,31 @@
             {% endif %}
         {% endwith %}
 
-        <!-- Registration Form Card -->
-        <div class="card bg-white text-dark shadow-sm border p-4">
-            <h3 class="mb-3 font-weight-bold text-primary">Student Bag Registration</h3>
-            <form action="{{ url_for('register') }}" method="POST" enctype="multipart/form-data">
-                <div class="form-group mb-3">
-                    <label for="student_name" class="font-weight-bold small text-secondary">Student Full Name:</label>
-                    <input type="text" class="form-control bg-light border" id="student_name" name="student_name" placeholder="Enter full name" required>
+        <!-- Quick Access Navigation Cards -->
+        <div class="row mt-4">
+            <div class="col-md-4 mb-3">
+                <div class="card bg-white border shadow-sm p-4 h-100 text-left">
+                    <h4 class="font-weight-bold text-primary mb-2">Register Bag</h4>
+                    <p class="text-muted small mb-4">New student? Register your bag details and upload reference photos into the campus database.</p>
+                    <a href="{{ url_for('register') }}" class="btn btn-primary btn-block font-weight-bold mt-auto">Go to Registration</a>
                 </div>
+            </div>
 
-                <div class="form-group mb-3">
-                    <label for="usn" class="font-weight-bold small text-secondary">Student ID Number (USN):</label>
-                    <input type="text" class="form-control bg-light border" id="usn" name="usn" placeholder="e.g., 21006050810" required>
+            <div class="col-md-4 mb-3">
+                <div class="card bg-white border shadow-sm p-4 h-100 text-left">
+                    <h4 class="font-weight-bold text-success mb-2">BagTracker</h4>
+                    <p class="text-muted small mb-4">Verify active student gate passes and monitor bag entry/exit records in real-time.</p>
+                    <a href="{{ url_for('bagtracker') }}" class="btn btn-success btn-block font-weight-bold mt-auto">Open BagTracker</a>
                 </div>
+            </div>
 
-                <div class="form-group mb-3">
-                    <label for="department" class="font-weight-bold small text-secondary">Department / Program:</label>
-                    <select class="form-control bg-light border" id="department" name="department" required>
-                        <option value="" disabled selected>Select Department</option>
-                        <option value="BSCS">BS Computer Science (BSCS)</option>
-                        <option value="BSIT">BS Information Technology (BSIT)</option>
-                        <option value="BSCPE">BS Computer Engineering (BSCPE)</option>
-                        <option value="BSBA">BS Business Administration (BSBA)</option>
-                    </select>
+            <div class="col-md-4 mb-3">
+                <div class="card bg-white border shadow-sm p-4 h-100 text-left">
+                    <h4 class="font-weight-bold text-dark mb-2">Gate Scan</h4>
+                    <p class="text-muted small mb-4">Quickly check security clearance by searching a student's USN at the gate checkpoint.</p>
+                    <a href="{{ url_for('scan') }}" class="btn btn-dark btn-block font-weight-bold mt-auto">Open Scanner</a>
                 </div>
-
-                <div class="form-group mb-3">
-                    <label for="bag_description" class="font-weight-bold small text-secondary">Bag Description (Brand, Color, Type):</label>
-                    <textarea class="form-control bg-light border" id="bag_description" name="bag_description" rows="3" placeholder="e.g., Black North Face backpack with laptop compartment" required></textarea>
-                </div>
-
-                <div class="form-group mb-4">
-                    <label for="bag_image" class="font-weight-bold small text-secondary">Upload Bag Photo / Proof:</label>
-                    <input type="file" class="form-control-file border p-2 rounded bg-light" id="bag_image" name="bag_image" accept="image/*">
-                </div>
-
-                <button type="submit" class="btn btn-primary btn-block font-weight-bold py-2">Submit Registration</button>
-            </form>
+            </div>
         </div>
     </div>
 </div>
