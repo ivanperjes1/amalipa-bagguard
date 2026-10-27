@@ -7,11 +7,12 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body class="bg-light text-dark">
-    <!-- Light Navbar -->
+    <!-- Light Navbar with Logo -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
         <div class="container">
-            <a class="navbar-brand font-weight-bold text-primary" href="{{ url_for('index') }}">
-                BagGuard System
+            <a class="navbar-brand font-weight-bold text-primary d-flex align-items-center" href="{{ url_for('index') }}">
+                <img src="{{ url_for('static', filename='logo.png') }}" width="35" height="35" class="mr-2 rounded" alt="AMA Logo" onerror="this.style.display='none'">
+                <span>AMA Lipa BagGuard</span>
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
